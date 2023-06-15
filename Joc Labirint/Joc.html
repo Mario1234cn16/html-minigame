@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+}
+</style>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="sweetalert2.js"></script>
+<body onload="startGame()">
+<script>
+
+var myGamePiece;
+var myObstacle;
+var myObstacle2;
+var myObstacle3;
+var myObstacle4;
+var myObstacle5;
+var myObstacle6;
+var myObstacle7;
+var myObstacle8;
+var myObstacle9;
+var myObstacle10;
+var myObstacle11;
+var myObstacle12;
+var myObstacle13;
+var myObstacle14;
+var myObstacle15;
+var myObstacle16;
+var myObstacle17;
+var myObstacle18;
+var myObstacle19;
+
+
+
+function startGame() {
+    myGamePiece = new component(30, 30, "red", 40, 140);
+    myObstacle  = new component(10, 600, "black", 0, 0); 
+	myObstacle2  = new component(1350, 10, "black", 0, 0); 
+	myObstacle3  = new component(1350, 10, "black", 0, 590);
+	myObstacle4  = new component(10, 200, "black", 760, 0);
+	myObstacle5  = new component(10, 600, "black", 1340, 0);	
+	myObstacle6  = new component(10, 400, "black", 760, 200);
+	myObstacle7  = new component(390, 10, "black", 0, 200);
+	myObstacle8  = new component(200, 10, "black", 570, 200);
+	myObstacle9  = new component(190, 10, "black", 190, 100);
+	myObstacle10  = new component(190, 10, "black", 1160, 100);
+	myObstacle11  = new component(10, 100, "black", 380, 100);
+	myObstacle12  = new component(390, 10, "black", 0, 300);
+	myObstacle13  = new component(10, 390, "black", 390, 300);
+	myObstacle14  = new component(10, 390, "black", 1150, 300);
+	myObstacle15  = new component(190, 10, "black", 1160, 300);
+	myObstacle16  = new component(40, 40, "blue", 140, 450);
+	myObstacle17  = new component(40, 40, "green", 1225, 175);
+	myObstacle18  = new component(40, 40, "deeppink", 1225, 350);
+	myObstacle19  = new component(10, 100, "black", 380, 200);
+    myGameArea.start();
+}
+
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    start : function() {
+        this.canvas.width = 1350;
+        this.canvas.height = 600;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.interval = setInterval(updateGameArea, 20);
+    },
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+    stop : function() {
+        clearInterval(this.interval);
+    }
+}
+
+function component(width, height, color, x, y) {
+    this.width = width;
+    this.height = height;
+    this.speedX = 0;
+    this.speedY = 0;    
+    this.x = x;
+    this.y = y;    
+    this.update = function() {
+        ctx = myGameArea.context;
+        ctx.fillStyle = color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+    this.crashWith = function(otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+            crash = false;
+        }
+        return crash;
+    }
+}
+
+function updateGameArea() {
+    if (myGamePiece.crashWith(myObstacle) || myGamePiece.crashWith(myObstacle2) || myGamePiece.crashWith(myObstacle3) || myGamePiece.crashWith(myObstacle4) || myGamePiece.crashWith(myObstacle5) || myGamePiece.crashWith(myObstacle6) || myGamePiece.crashWith(myObstacle7) || myGamePiece.crashWith(myObstacle8) || myGamePiece.crashWith(myObstacle9) || myGamePiece.crashWith(myObstacle10) || myGamePiece.crashWith(myObstacle11) || myGamePiece.crashWith(myObstacle12) || myGamePiece.crashWith(myObstacle14) || myGamePiece.crashWith(myObstacle15) || myGamePiece.crashWith(myObstacle19)) {
+        myGameArea.stop();
+		Swal.fire({
+			type: 'error',
+			title: 'Oops...',
+			text: 'It seems that you lost!',
+		})
+    } else {
+        myGameArea.clear();
+        myObstacle.update();
+		myObstacle2.update();
+		myObstacle3.update();
+		myObstacle4.update();
+		myObstacle5.update();
+		myObstacle6.update();
+		myObstacle7.update();
+		myObstacle8.update();
+		myObstacle9.update();
+		myObstacle10.update();
+		myObstacle11.update();
+		myObstacle12.update();
+		myObstacle13.update();
+		myObstacle14.update();
+		myObstacle15.update();
+		myObstacle16.update();
+		myObstacle17.update();
+		myObstacle18.update();
+		myObstacle19.update();
+        myGamePiece.x += myGamePiece.speedX;
+        myGamePiece.y += myGamePiece.speedY;    
+        myGamePiece.update();
+    }
+	if (myGamePiece.crashWith(myObstacle16)) {
+        myGamePiece.x = 1260;
+		myGamePiece.y = 40;
+    }
+	if (myGamePiece.crashWith(myObstacle17)) {
+        myGamePiece.x = 1225;
+		myGamePiece.y = 500;
+    }
+	if (myGamePiece.crashWith(myObstacle18)) {
+		myGamePiece.x = 40;
+		myGamePiece.y = 240;
+        Swal.fire({
+			title: 'YAY',
+			text: "You won!Do you want to play again?",
+			type: 'success',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes!'
+		}).then((result) => {
+			if (result.value) {
+				myGamePiece.x = 40;
+				myGamePiece.y = 140;
+			}
+		})
+    }
+}
+
+function moveup() {
+    myGamePiece.speedY = -1; 
+}
+
+function movedown() {
+    myGamePiece.speedY = 1; 
+}
+
+function moveleft() {
+    myGamePiece.speedX = -1; 
+}
+
+function moveright() {
+    myGamePiece.speedX = 1; 
+}
+
+function clearmove() {
+    myGamePiece.speedX = 0; 
+    myGamePiece.speedY = 0; 
+}
+document.addEventListener('keydown', function(event) {
+    if(event.keyCode == 37) {
+        moveleft();
+    }
+    if(event.keyCode == 39) {
+        moveright();
+    }
+	if(event.keyCode == 40) {
+        movedown();
+    }
+    if(event.keyCode == 38) {
+        moveup();
+    }
+});
+document.addEventListener('keyup', function(event) {
+    if(event.keyCode == 37) {
+        clearmove();
+    }
+    if(event.keyCode == 39) {
+        clearmove();
+    }
+	if(event.keyCode == 40) {
+        clearmove();
+    }
+    if(event.keyCode == 38) {
+        clearmove();
+    }
+});
+</script>
+<link rel="stylesheet" type="text/css" href="sweetalert2.css">
+</body>
+</html>
